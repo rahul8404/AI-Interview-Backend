@@ -31,8 +31,13 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// preflight handler
-app.options("/*", cors(corsOptions));
+// handle preflight globally (SAFE WAY)
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 app.use(express.json());
 
