@@ -31,8 +31,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// IMPORTANT: preflight must use SAME config
-app.options("*", cors(corsOptions));
+// preflight handler
+app.options("/*", cors(corsOptions));
 
 app.use(express.json());
 
