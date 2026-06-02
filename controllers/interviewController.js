@@ -1,7 +1,6 @@
 const axios = require("axios");
-const Interview = require("../models/Interview");
+const Interview = require("../models/interview");
 const User = require("../models/userSchema");
-const interview = require("../models/interview");
 
 
 // ===============================
@@ -166,7 +165,7 @@ Return ONLY valid JSON in this format:
 
 const getInterviewHistory = async (req, res) => {
     try {
-        const interviews = await interview.find({
+        const interviews = await Interview.find({
             user: req.user.id
         }).sort({
             createdAt: -1
@@ -187,9 +186,9 @@ const getInterviewHistory = async (req, res) => {
 
 const deleteInterviewHistory = async (req, res) => {
     try {
-        const interview = await Interview.findById(req.params.id)
+        const  foundInterview = await Interview.findById(req.params.id)
 
-        if (!interview) {
+        if (! foundInterview) {
             return res.status(404).json({
                 message: "Interview not found"
             })
@@ -199,7 +198,7 @@ const deleteInterviewHistory = async (req, res) => {
         res.status(200).json({
             message: "Interview deleted Successfully"
         })
-    } catch (error) {
+    } catch (err) {
         console.log(err);
         res.status(500).json({
             message: "Server Error"
