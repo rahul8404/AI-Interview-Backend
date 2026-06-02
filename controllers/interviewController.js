@@ -1,7 +1,7 @@
 const axios = require("axios");
 const Interview = require("../models/Interview");
 const User = require("../models/userSchema");
-const interview = require("../models/Interview");
+const interview = require("../models/interview");
 
 
 // ===============================
