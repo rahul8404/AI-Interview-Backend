@@ -8,11 +8,32 @@ const aiRoutes = require("./routes/aiRoutes.js")
 
 const app = express();
 
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "https://ai-interview-frontend-six-lovat.vercel.app"
+    ];
 
-app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true
-}));
+    // allow tools like Postman / mobile apps
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"), false);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
+
+app.use(cors(corsOptions));
+
+// IMPORTANT: preflight must use SAME config
+app.options("*", cors(corsOptions));
+
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
